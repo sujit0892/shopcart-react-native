@@ -14,6 +14,10 @@ target 'shopcart_react' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'shopcart_reactTests' do
     inherit! :complete
     # Pods for testing
