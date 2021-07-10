@@ -2,6 +2,8 @@ package com.shopcart_react;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.facebook.react.ReactActivity;
 
 import org.devio.rn.splashscreen.SplashScreen;
@@ -19,6 +21,7 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     SplashScreen.show(this,R.style.SplashScreenTheme);
     super.onCreate(savedInstanceState);
   }

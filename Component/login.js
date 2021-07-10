@@ -98,7 +98,8 @@ class Login extends Component{
         return;
       }
       this.storeData(response.data);
-      this.props.navigation.navigate("home");
+      this.props.navigation.navigate("ShopCart");
+      
     }, (error) => {
       console.log(error);
       this.setState({disable:false})
@@ -148,7 +149,7 @@ class Login extends Component{
         this.setState({disable:false})
         return
       }
-      this.props.navigation.navigate("home");
+      this.props.navigation.navigate("ShopCart");
       
     }, (error) => {
       console.log(error)
@@ -164,7 +165,7 @@ class Login extends Component{
     render(){
         return(
         <KeyboardAvoidingView style = {styles.container}>
-            <StatusBar backgroundColor="#673AB7"/>
+       
             {this.state.login &&<View style = {styles.loginForm}>
 
             <Card containerStyle={styles.cards}>

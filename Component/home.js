@@ -8,8 +8,9 @@
 
  import React, { Component } from 'react';
  import 'react-native-gesture-handler';
- 
- 
+
+ import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
  import {
    SafeAreaView,
    ScrollView,
@@ -18,9 +19,9 @@
    Text,
    useColorScheme,
    View,
-
+  BackHandler
  } from 'react-native';
- import SplashScreen from 'react-native-splash-screen';
+
  
  import {
    Colors,
@@ -30,23 +31,35 @@
    ReloadInstructions,
  } from 'react-native/Libraries/NewAppScreen';
  
+ const Drawer = createDrawerNavigator();
 
  class Home extends Component{
  
    constructor(){
      super();
-   }
- 
-   componentDidMount(){
     
+     
    }
  
+  //  componentDidMount(){
+  //   console.log('this.props',this.props)
+  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+  //  }
+   
+  //  handleBackButton(){
+  //    BackHandler.exitApp()
+  //  }
+
+  //  componentWillUnmount() {
+  //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  // }
+
    render(){
      return (
-         <View  style={styles.container}>
-           <StatusBar backgroundColor="#673AB7"/>
-           <Text>Home</Text>
-           </View>
+
+     <View styles={styles.container}>
+       <Text>Home</Text></View>
+
      );
    }
  }
