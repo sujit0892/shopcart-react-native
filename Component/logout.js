@@ -10,7 +10,7 @@
  import 'react-native-gesture-handler';
  import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
+ import { connect } from 'react-redux';
  
  import {
     StyleSheet,
@@ -19,6 +19,7 @@
    Text
 
  } from 'react-native';
+import { LOGOUT } from './action/type';
 
  
 
@@ -33,6 +34,7 @@
    logout = async () => {
     try {
       await AsyncStorage.setItem('user_id', "")
+      this.props.logout();
       this.props.navigation.navigate("ShopCart");
     } catch (e) {
       // saving error
@@ -65,5 +67,13 @@
  
  });
  
- export default Logout;
+ const mapStateToProps = state => ({
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch({ type: LOGOUT })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout)
  

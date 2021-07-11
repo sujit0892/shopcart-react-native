@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOGIN, LOGOUT } from './Component/action/type';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,8 +21,8 @@ import {
   Text,
   useColorScheme,
   View,
-  
- 
+
+
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -48,21 +49,20 @@ import {
 } from '@react-navigation/drawer';
 import { Button } from 'react-native-elements';
 import Logout from './Component/logout';
-import { createStore } from 'redux'
-
-import { Provider } from 'react-redux'
+import { connect } from 'react-redux';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-export default class App extends Component{
+class App extends Component {
 
-  constructor(){
+  constructor() {
     super();
-    
-    this.state={
-      isVisible:true,
-      login_val:false
+
+    this.state = {
+      isVisible: true,
+      user_id: "",
+      isLogin: false
     }
     this.getData()
   }
@@ -71,40 +71,41 @@ export default class App extends Component{
     try {
       const value = await AsyncStorage.getItem('user_id')
       console.log("fetch")
-      if(value !== null) {
-        this.setState({login_val:true})
+      if (value !== null) {
+        this.setState({ login_val: true })
+        this.props.login()
       }
-      
-    } catch(e) {
+
+    } catch (e) {
       // error reading value
       console.log(e)
     }
   }
 
-  
 
-  componentDidMount(){
+
+  componentDidMount() {
     SplashScreen.hide();
 
-}
-  
+  }
 
-  render(){
+
+  render() {
     return (
-      
-        <NavigationContainer >
-          <StatusBar backgroundColor="white" barStyle='dark-content'/>
-          <Drawer.Navigator defaultScreenOptions={true}>
-            <Drawer.Screen name="ShopCart" component={Home} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}} />
-            {this.state.login_val && <Drawer.Screen name="Profile" component={Profile} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}}/>}
-            {!this.state.login_val && <Drawer.Screen name="Login" component={Login} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}}/>}
-            <Drawer.Screen name="Search" component={Search} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}} />
-            <Drawer.Screen name="Cart" component={Cart} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}} />
-            <Drawer.Screen name="Order" component={Order} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}} />
-            {this.state.login_val && <Drawer.Screen name="Logout" component={Logout} options={{headerStyle:{backgroundColor:'white'},headerTintColor:'#673AB7',drawerActiveTintColor:'#673AB7'}}/>}
-            
-          </Drawer.Navigator>
-        </NavigationContainer>
+
+      <NavigationContainer >
+        <StatusBar backgroundColor="white" barStyle='dark-content' />
+        <Drawer.Navigator defaultScreenOptions={true}>
+          <Drawer.Screen name="ShopCart" component={Home} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
+          {this.props.isLogin && <Drawer.Screen name="Profile" component={Profile} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
+          {!this.props.isLogin && <Drawer.Screen name="Login" component={Login} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
+          <Drawer.Screen name="Search" component={Search} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
+          <Drawer.Screen name="Cart" component={Cart} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
+          <Drawer.Screen name="Order" component={Order} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
+          {this.props.isLogin && <Drawer.Screen name="Logout" component={Logout} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
+
+        </Drawer.Navigator>
+      </NavigationContainer>
     );
   }
 }
@@ -113,13 +114,23 @@ export default class App extends Component{
 
 
 const styles = StyleSheet.create({
- container:{
-   flex:1,
-   justifyContent:'center',
-   alignItems:'center',
-   
-  
- },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+
+  },
 
 });
+
+const mapStateToProps = state => ({
+  isLogin: state.isLogin,
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: () => dispatch({ type: LOGIN })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
