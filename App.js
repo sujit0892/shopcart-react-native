@@ -1,15 +1,6 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, { Component } from 'react';
 import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LOGIN, LOGOUT } from './Component/action/type';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -21,8 +12,7 @@ import {
   Text,
   useColorScheme,
   View,
-
-
+ 
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -33,104 +23,72 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import DrawerNav from './Component/DrawerNav';
+import { main_color } from './Component/const';
+import ChangePassword from './Component/ChangePassword';
+import Phone from './Component/Phone';
+import Address from './Component/Address';
 
-import Login from './Component/login'
-import Home from './Component/home'
-import Profile from './Component/profile'
-import Search from './Component/search'
-import Cart from './Component/cart'
-import Order from './Component/order'
 
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import { Button } from 'react-native-elements';
-import Logout from './Component/logout';
-import { connect } from 'react-redux';
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
+class App extends Component{
 
-class App extends Component {
-
-  constructor() {
+  constructor(){
     super();
-
-    this.state = {
-      isVisible: true,
-      user_id: "",
-      isLogin: false
+    this.state={
+      isVisible:true,
+      defaultScree:true
     }
     this.getData()
+    
   }
 
   getData = async () => {
     try {
       const value = await AsyncStorage.getItem('user_id')
-      console.log("fetch")
-      if (value !== null) {
-        this.setState({ login_val: true })
-        this.props.login()
+    
+      if(value !== null) {
+        this.setState({defaultScree:false})
       }
-
-    } catch (e) {
+    } catch(e) {
       // error reading value
       console.log(e)
     }
   }
+  
 
-
-
-  componentDidMount() {
+  componentDidMount(){
     SplashScreen.hide();
-
   }
+  
 
-
-  render() {
+  render(){
     return (
 
-      <NavigationContainer >
-        <StatusBar backgroundColor="white" barStyle='dark-content' />
-        <Drawer.Navigator defaultScreenOptions={true}>
-          <Drawer.Screen name="ShopCart" component={Home} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
-          {this.props.isLogin && <Drawer.Screen name="Profile" component={Profile} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
-          {!this.props.isLogin && <Drawer.Screen name="Login" component={Login} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
-          <Drawer.Screen name="Search" component={Search} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
-          <Drawer.Screen name="Cart" component={Cart} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
-          <Drawer.Screen name="Order" component={Order} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
-          {this.props.isLogin && <Drawer.Screen name="Logout" component={Logout} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
-
-        </Drawer.Navigator>
+        <NavigationContainer>
+          <StatusBar backgroundColor={main_color}/>
+              <Stack.Navigator  >
+                        
+                        <Stack.Screen  name="home"  component={DrawerNav}  options={{ headerShown: false }} /> 
+                        <Stack.Screen  name="ChangePassword"  component={ChangePassword}  options={{ headerShown: true},{headerTintColor:main_color}} />
+                        <Stack.Screen  name="ManagePhone"  component={Phone}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
+                        <Stack.Screen  name="ManageAddress"  component={Address}  options={{ headerShown: true},{headerTintColor:main_color}} />  
+               </Stack.Navigator>  
       </NavigationContainer>
+
     );
   }
 }
 
-
-
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+ container:{
+   flex:1,
+   justifyContent:'center',
+   alignItems:'center'
 
-
-  },
+ },
 
 });
 
-const mapStateToProps = state => ({
-  isLogin: state.isLogin,
-});
-
-const mapDispatchToProps = dispatch => ({
-  login: () => dispatch({ type: LOGIN })
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
-
+export default App;
