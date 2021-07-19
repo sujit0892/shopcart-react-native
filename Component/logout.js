@@ -35,7 +35,7 @@ import { LOGOUT } from './action/type';
     try {
       await AsyncStorage.setItem('user_id', "")
       this.props.logout();
-      this.props.navigation.navigate("ShopCart");
+      this.props.navigation.navigate("Login");
     } catch (e) {
       // saving error
       console.log(e)

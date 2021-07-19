@@ -11,7 +11,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ToastAndroid,
-
+  BackHandler
 
 } from 'react-native';
 
@@ -51,6 +51,7 @@ class Login extends Component {
     this.loginClick = this.loginClick.bind(this)
     this.login = this.login.bind(this)
     this.register = this.register.bind(this)
+    this.handleBackButton = this.handleBackButton.bind(this)
 
   }
 
@@ -99,7 +100,7 @@ class Login extends Component {
           }
           this.storeData(response.data);
           this.props.login()
-          this.props.navigation.navigate("ShopCart");
+          this.props.navigation.navigate("home");
 
         }, (error) => {
           console.log('error', error);
@@ -147,7 +148,7 @@ class Login extends Component {
             return
           }
           this.props.login()
-          this.props.navigation.navigate("ShopCart");
+          this.props.navigation.navigate("home");
           
 
         }, (error) => {
@@ -158,7 +159,18 @@ class Login extends Component {
 
   }
 
+  componentDidMount(){
+ 
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
 
+   }
+   handleBackButton(){
+     BackHandler.exitApp()
+   }
+
+   componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
 
 
   render() {
@@ -178,7 +190,7 @@ class Login extends Component {
           </Card>
 
         </View>}
-        {this.state.register && <View style={styles.registerForm}><ScrollView contentContainerStyle={styles.ScrollView_content} style={styles.ScrollView}>
+        {this.state.register && <View style={styles.loginForm}><ScrollView contentContainerStyle={styles.ScrollView_content} style={styles.ScrollView}>
           <Card containerStyle={styles.cards}>
             <Card.Title style={styles.cards_title}>Signup</Card.Title>
             <TextInput style={styles.field} value={this.state.email} placeholder="Email" keyboardType="email-address" onChangeText={(email) => this.setState({ email })} />

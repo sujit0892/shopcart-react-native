@@ -19,17 +19,17 @@ import { NavigationContainer } from '@react-navigation/native';
    Text,
    useColorScheme,
    View,
-  BackHandler
+  BackHandler,FlatList,
+  Image
  } from 'react-native';
 
  
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
+ import { Card } from 'react-native-elements';
+ import { color } from 'react-native-elements/dist/helpers';
+ import { TouchableOpacity } from 'react-native';
+ import AsyncStorage from '@react-native-async-storage/async-storage';
+ import axios from "axios"
+ import { base_url } from "./const"
  
  const Drawer = createDrawerNavigator();
 
@@ -37,14 +37,37 @@ import { NavigationContainer } from '@react-navigation/native';
  
    constructor(){
      super();
-    
-     
+     this.state={
+       category: []
+     }
+     this.get_category();
+   }
+
+
+    get_category(){
+      axios({
+        method: 'get',
+        url: base_url+'/product/getCategory',
+
+
+    })
+    .then(
+      (response) => {
+        this.setState({category:response.data})
+        
+
+      }, (error) => {
+        console.log(error);
+
+      }
+      );
    }
  
-  //  componentDidMount(){
-  //   console.log('this.props',this.props)
-  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
-  //  }
+   componentDidMount(){
+    // console.log('this.props',this.props)
+    // BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+
+   }
    
   //  handleBackButton(){
   //    BackHandler.exitApp()
@@ -54,11 +77,32 @@ import { NavigationContainer } from '@react-navigation/native';
   //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   // }
 
-   render(){
-     return (
+   navigateCategory=(id,category)=>{
+     console.log(category)
+   }
 
-     <View styles={styles.container}>
-       <Text>Home</Text></View>
+   render(){
+     return ( 
+       
+         <SafeAreaView style={styles.container}>
+         <FlatList
+            data={this.state.category}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={{flex:1}} onPress={()=>this.navigateCategory(item.category_id,item.category)}>              
+                <Card containerStyle={styles.card} >
+                <Card.Image source={{uri: item.url}}  />
+                <Text style={{alignSelf: 'center',}}>{item.category}</Text>
+              </Card>
+              </TouchableOpacity>
+
+            )}
+      //Setting the number of column
+            numColumns={2}
+            keyExtractor={(item) => item.category_id}
+         />
+       </SafeAreaView>
+
+
 
      );
    }
@@ -67,10 +111,22 @@ import { NavigationContainer } from '@react-navigation/native';
  const styles = StyleSheet.create({
   container:{
     flex:1,
-    justifyContent:'center',
-    alignItems:'center'
  
   },
+  imageThumbnail: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width:50
+
+  },
+  card:{
+    flex:1,
+    flexDirection:'column',
+    margin:0,
+    alignContent:'center'
+    
+  }
  
  });
  

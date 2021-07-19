@@ -21,6 +21,7 @@
    Text,
    useColorScheme,
    View,
+   BackHandler
  
  
  } from 'react-native';
@@ -67,6 +68,7 @@
        isLogin: false
      }
      this.getData()
+     this.handleBackButton = this.handleBackButton.bind(this)
    }
  
    getData = async () => {
@@ -87,9 +89,17 @@
  
    componentDidMount() {
      SplashScreen.hide();
- 
+
+      // console.log('this.props',this.props)
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
    }
- 
+    handleBackButton(){
+     BackHandler.exitApp()
+   }
+
+   componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
  
    render() {
      return (
@@ -100,7 +110,6 @@
          <Drawer.Navigator defaultScreenOptions={true}>
            <Drawer.Screen name="ShopCart" component={Home} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            {this.props.isLogin && <Drawer.Screen name="Profile" component={Profile} options={{ headerStyle: { backgroundColor: 'white', borderBottomColor:"#CCCCCC",borderBottomWidth:1, }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
-           {!this.props.isLogin && <Drawer.Screen name="Login" component={Login} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
            <Drawer.Screen name="Search" component={Search} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            <Drawer.Screen name="Cart" component={Cart} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            <Drawer.Screen name="Order" component={Order} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />

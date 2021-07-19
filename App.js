@@ -28,7 +28,11 @@ import { main_color } from './Component/const';
 import ChangePassword from './Component/ChangePassword';
 import Phone from './Component/Phone';
 import Address from './Component/Address';
-
+import ManageProduct from './Component/ManageProduct';
+import login from './Component/login';
+import { connect } from 'react-redux';
+import { LOGIN, LOGOUT } from './Component/action/type';
+ 
 
 
 const Stack = createStackNavigator();
@@ -38,7 +42,7 @@ class App extends Component{
     super();
     this.state={
       isVisible:true,
-      defaultScree:true
+      defaultScreen:true
     }
     this.getData()
     
@@ -49,7 +53,7 @@ class App extends Component{
       const value = await AsyncStorage.getItem('user_id')
     
       if(value !== null) {
-        this.setState({defaultScree:false})
+        this.setState({defaultScreen:false})
       }
     } catch(e) {
       // error reading value
@@ -69,11 +73,12 @@ class App extends Component{
         <NavigationContainer>
           <StatusBar backgroundColor={main_color}/>
               <Stack.Navigator  >
-                        
+                        {!this.props.isLogin && <Stack.Screen  name="Login"  component={login}  options={{ headerShown: false }} /> }
                         <Stack.Screen  name="home"  component={DrawerNav}  options={{ headerShown: false }} /> 
                         <Stack.Screen  name="ChangePassword"  component={ChangePassword}  options={{ headerShown: true},{headerTintColor:main_color}} />
                         <Stack.Screen  name="ManagePhone"  component={Phone}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
-                        <Stack.Screen  name="ManageAddress"  component={Address}  options={{ headerShown: true},{headerTintColor:main_color}} />  
+                        <Stack.Screen  name="ManageAddress"  component={Address}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
+                        <Stack.Screen  name="ManageProduct"  component={ManageProduct}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
                </Stack.Navigator>  
       </NavigationContainer>
 
@@ -90,5 +95,11 @@ const styles = StyleSheet.create({
  },
 
 });
+const mapStateToProps = state => ({
+  isLogin: state.isLogin,
+});
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  login: () => dispatch({ type: LOGIN })
+});
+export default connect(mapStateToProps, mapDispatchToProps)(App);

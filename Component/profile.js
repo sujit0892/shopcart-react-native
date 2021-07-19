@@ -113,7 +113,7 @@ import { base_url } from "./const"
             <Text style={styles.touch_text}>Manage Address</Text></View>
             </Card>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.touch}>
+            <TouchableOpacity style={styles.touch} onPress={()=>this.props.navigation.navigate('ManageProduct',{userId:this.state.userId})}>
             <Card >
               <View style={{alignItems:'center'}}>
             <Text style={styles.touch_text}>Manage Product</Text></View>
