@@ -45,7 +45,7 @@ import { base_url } from "./const"
    getData = async () => {
     try {
       const value = await AsyncStorage.getItem('user_id')
-      console.log("fetch")
+     
       if (value !== null) {
           this.fetch(value)
           this.setState({userId:value})

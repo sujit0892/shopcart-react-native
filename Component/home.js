@@ -78,7 +78,7 @@ import { NavigationContainer } from '@react-navigation/native';
   // }
 
    navigateCategory=(id,category)=>{
-     console.log(category)
+     this.props.navigation.navigate('Category',{cat_name:category,cat_id:id})
    }
 
    render(){

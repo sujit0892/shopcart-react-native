@@ -32,6 +32,11 @@ import ManageProduct from './Component/ManageProduct';
 import login from './Component/login';
 import { connect } from 'react-redux';
 import { LOGIN, LOGOUT } from './Component/action/type';
+import Category from './Component/Category';
+import Browse from './Component/Browse';
+import Product from './Component/Product';
+import {  Button } from 'react-native-elements'
+
  
 
 
@@ -54,6 +59,7 @@ class App extends Component{
     
       if(value !== null) {
         this.setState({defaultScreen:false})
+        this.props.login()
       }
     } catch(e) {
       // error reading value
@@ -78,7 +84,11 @@ class App extends Component{
                         <Stack.Screen  name="ChangePassword"  component={ChangePassword}  options={{ headerShown: true},{headerTintColor:main_color}} />
                         <Stack.Screen  name="ManagePhone"  component={Phone}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
                         <Stack.Screen  name="ManageAddress"  component={Address}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
-                        <Stack.Screen  name="ManageProduct"  component={ManageProduct}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
+                        <Stack.Screen  name="ManageProduct"  component={ManageProduct}  options={{ headerShown: true},{headerTintColor:main_color}} />
+                        <Stack.Screen  name="Category"  component={Category}  options={{ headerShown: true},{headerTintColor:main_color}} />
+                        <Stack.Screen  name="Browse"  component={Browse}  options={{ headerShown: true},{headerTintColor:main_color}} /> 
+                        <Stack.Screen  name="Product"  component={Product}  options={{ headerShown: true},{headerTintColor:main_color},({navigation}) =>({headerRight:()=>(
+                        <Button buttonStyle={{ backgroundColor: '#673AB7',marginEnd:10,width:50}} title="Cart" onPress={()=>navigation.navigate('Cart')} />)})} /> 
                </Stack.Navigator>  
       </NavigationContainer>
 

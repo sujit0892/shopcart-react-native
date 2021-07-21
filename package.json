@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-picker/picker": "^1.16.3",
     "@react-navigation/drawer": "^6.0.0-next.19",
     "@react-navigation/native": "^6.0.0-next.15",
     "@react-navigation/stack": "^5.14.5",
@@ -21,11 +22,14 @@
     "react-native": "0.64.2",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-image-slider-box": "^1.0.12",
     "react-native-mmkv": "^1.1.6",
+    "react-native-ratings": "^8.1.0",
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.4.0",
     "react-native-splash-screen": "^3.2.0",
+    "react-native-unordered-list": "^1.0.4",
     "react-native-vector-icons": "^8.1.0",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0"
