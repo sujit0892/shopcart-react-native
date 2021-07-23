@@ -1,2 +1,6 @@
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const CART = 'CART'
+export const TOTAL_PRICE = 'TOTAL_PRICE'
+export const CART_ID = 'CART_ID'
+export const ORDER = 'ORDER'

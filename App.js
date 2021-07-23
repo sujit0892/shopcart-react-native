@@ -76,9 +76,9 @@ class App extends Component{
   render(){
     return (
 
-        <NavigationContainer>
+        <NavigationContainer >
           <StatusBar backgroundColor={main_color}/>
-              <Stack.Navigator  >
+              <Stack.Navigator  defaultScreenOptions={true}>
                         {!this.props.isLogin && <Stack.Screen  name="Login"  component={login}  options={{ headerShown: false }} /> }
                         <Stack.Screen  name="home"  component={DrawerNav}  options={{ headerShown: false }} /> 
                         <Stack.Screen  name="ChangePassword"  component={ChangePassword}  options={{ headerShown: true},{headerTintColor:main_color}} />

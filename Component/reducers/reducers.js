@@ -1,30 +1,53 @@
 import { reduce } from "async";
-import { LOGIN,LOGOUT } from "../action/type";
+import { LOGIN, LOGOUT , CART,TOTAL_PRICE,CART_ID, ORDER} from "../action/type";
 
-const initialState={
-    user_id:"",
-    isLogin:false
+const initialState = {
+    user_id: "",
+    isLogin: false,
+    cart: [],
+    cart_id:[],
+    total_price:0,
+    order:[]
 }
 
-const reducer = (state = initialState,action)=>{
-    switch(action.type)
-    {
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
         case LOGIN:
-            
-            return{
+
+            return {
                 ...state,
-                isLogin:true
+                isLogin: true
             }
 
         case LOGOUT:
             return {
                 ...state,
-                isLogin:false
+                isLogin: false
+            }
+        case CART:
+            return {
+                ...state,
+                cart: action.data
+            }
+        case TOTAL_PRICE:
+                return {
+                    ...state,
+                    total_price: action.data
+                }
+        case CART_ID:
+            return {
+                ...state,
+                cart_id:action.data
+            }
+        case ORDER:
+            return {
+                ...state,
+                order:action.data
             }
         default:
             return state;
     }
-        
+
 }
 
 export default reducer;

@@ -27,7 +27,8 @@
  import axios from "axios"
  import AsyncStorage from '@react-native-async-storage/async-storage';
  import { Card, Button, CheckBox } from 'react-native-elements'
-
+ import {  CART,TOTAL_PRICE, CART_ID } from './action/type';
+ import { connect } from 'react-redux';
  import { base_url, main_color } from "./const"
  import { SliderBox } from "react-native-image-slider-box";
  import Unorderedlist from 'react-native-unordered-list';
@@ -138,10 +139,42 @@ import { KeyboardAvoidingView } from 'react-native';
         );
     
    }
+
+   addToCart=()=>{
+    //  console.log(this.state.prod_data.cat_level1.category_id);
+    axios({
+      method: 'post',
+      url: base_url + '/cart/addToCart',
+      data: {
+          quantity:1,
+          product_id: this.prod_id,
+          user_id: this.state.userId,
+          cat_id: this.state.prod_data.cat_level1.category_id
+          
+      }
+
+    })
+      .then(
+        (response) => {
+          
+          ToastAndroid.show("added to cart successfully",ToastAndroid.SHORT)            
+          this.getProduct()
+          this.props.setCartData([...this.props.cart_data,response.data])
+          this.props.setCartId([...this.props.cart_id,response.data.cart_id])
+          this.props.setTotalPrice(this.props.total_price+response.data.product.price)
+      
+        }, (error) => {
+          console.log('error', error);
+          ToastAndroid.show("Internal error",ToastAndroid.SHORT)
+          
+        }
+      );
+   }
  
    render(){
      return (
          <View  style={styles.container}>
+           <View style={{flex:9.8}}>
           <ScrollView >
               <SliderBox images={this.state.images} sliderBoxHeight={500}/>
               <Card containerStyle={styles.card}>
@@ -178,7 +211,8 @@ import { KeyboardAvoidingView } from 'react-native';
               </Card></KeyboardAvoidingView>
               
               {this.state.ready && this.state.review_data.map((data)=>{
-                return (<Card containerStyle={styles.card}>
+                
+                return (<Card containerStyle={styles.card} key={data.reviewId}>
                   <View style={{flexDirection:'row'}}>
                   <Text style={{fontWeight:'bold', color:'#323232'}}>{data.user.name}</Text>
                   <Text style={{fontWeight:'bold',color:'#323232',marginHorizontal:10}}>{data.rating}<Image source={require('./icon/star.png')}/></Text>
@@ -188,8 +222,11 @@ import { KeyboardAvoidingView } from 'react-native';
                 </Card>)
               })}
               
-          </ScrollView>
-              
+          </ScrollView></View>
+          <View style={styles.button}>
+
+            <Button buttonStyle={styles.login_button} title="Add To Cart" onPress={this.addToCart}  />
+            </View>
            </View>
      );
    }
@@ -218,8 +255,34 @@ import { KeyboardAvoidingView } from 'react-native';
     paddingLeft: 15,
     borderRadius: 5
   },
+  button: {
+ 
+    
+  },
+  login_button: {
+    
+    borderRadius: 0,
+    backgroundColor: "#673AB7",
+    width: "100%",
+    alignContent: "center"
+  },
+  
+ 
  
  });
- 
- export default Product;
- 
+
+ const mapStateToProps = state => ({
+  cart_data: state.cart,
+  cart_id : state.cart_id,
+  total_price : state.total_price
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCartData: (data) => dispatch({ type: CART, data: data}),
+  setTotalPrice: (data) => dispatch({type:TOTAL_PRICE, data:data}),
+  setCartId: (data) => dispatch({type:CART_ID, data:data})
+  
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product)
+  

@@ -27,7 +27,8 @@
  import axios from "axios"
  import AsyncStorage from '@react-native-async-storage/async-storage';
  import { Card, Button, CheckBox } from 'react-native-elements'
-
+ import {  CART } from './action/type';
+ import { connect } from 'react-redux';
  import { base_url, main_color } from "./const"
  import {Picker} from '@react-native-picker/picker';
 
@@ -161,6 +162,7 @@
   }
  
  });
+
  
- export default Browse;
+export default Browse
  

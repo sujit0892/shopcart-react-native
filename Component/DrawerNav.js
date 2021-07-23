@@ -107,7 +107,7 @@
  
          
       
-         <Drawer.Navigator defaultScreenOptions={true}>
+         <Drawer.Navigator defaultScreenOptions={true} detachInactiveScreens={true}>
            <Drawer.Screen name="ShopCart" component={Home} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            {this.props.isLogin && <Drawer.Screen name="Profile" component={Profile} options={{ headerStyle: { backgroundColor: 'white', borderBottomColor:"#CCCCCC",borderBottomWidth:1, }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
            <Drawer.Screen name="Search" component={Search} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
