@@ -132,7 +132,7 @@
             )}
       //Setting the number of column
             numColumns={2}
-            keyExtractor={(item) => item.category_id}
+            keyExtractor={(item) => item.asin}
          />
          
            </SafeAreaView>

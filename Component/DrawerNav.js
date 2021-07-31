@@ -51,6 +51,7 @@
  import { Button } from 'react-native-elements';
  import Logout from './logout';
  import { connect } from 'react-redux';
+import ShopByCategory from './ShopByCategory';
 
  
  const Stack = createStackNavigator();
@@ -110,6 +111,8 @@
          <Drawer.Navigator defaultScreenOptions={true} detachInactiveScreens={true}>
            <Drawer.Screen name="ShopCart" component={Home} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            {this.props.isLogin && <Drawer.Screen name="Profile" component={Profile} options={{ headerStyle: { backgroundColor: 'white', borderBottomColor:"#CCCCCC",borderBottomWidth:1, }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />}
+           <Drawer.Screen name="Shop By Category" component={ShopByCategory} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
+
            <Drawer.Screen name="Search" component={Search} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            <Drawer.Screen name="Cart" component={Cart} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />
            <Drawer.Screen name="Order" component={Order} options={{ headerStyle: { backgroundColor: 'white' }, headerTintColor: '#673AB7', drawerActiveTintColor: '#673AB7' }} />

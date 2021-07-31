@@ -29,7 +29,7 @@ import { NavigationContainer } from '@react-navigation/native';
  import { TouchableOpacity } from 'react-native';
  import AsyncStorage from '@react-native-async-storage/async-storage';
  import axios from "axios"
- import { base_url } from "./const"
+ import { base_url, base_url2 } from "./const"
  
  const Drawer = createDrawerNavigator();
 
@@ -38,30 +38,110 @@ import { NavigationContainer } from '@react-navigation/native';
    constructor(){
      super();
      this.state={
-       category: []
+       user_id:"",
+       r_product: [],
+       p_product: []
      }
-     this.get_category();
+     this.getData()
+     this.getPopularProduct()
+   }
+   getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_id')
+      if (value !== null) {
+        this.setState({user_id:value})
+        this.getRecomendation()
+      }
+
+    } catch (e) {
+      // error reading value
+      console.log(e)
+    }
+  }
+
+   getRecomendation = ()=>{
+     if(this.state.user_id!="")
+     {
+      axios({
+        method: 'post',
+        url: base_url2+'/recomendation/',
+        headers: { "Content-Type": "text/plain" },
+        data: this.state.user_id
+  
+  
+      })
+      .then(
+        (response) => {
+          axios({
+            method: 'post',
+            url: base_url+'/product/getProductArray',
+            data: {
+              product_id:response.data
+            }
+      
+      
+          })
+          .then(
+            (response) => {
+            this.setState({r_product:response.data}) 
+            
+            }, (error) => {
+            console.log(error);
+            
+            }
+            );
+        
+        }, (error) => {
+        console.log(error);
+        
+        }
+        );
+     }
+
+     
+
    }
 
-
-    get_category(){
-      axios({
-        method: 'get',
-        url: base_url+'/product/getCategory',
+   getPopularProduct=()=>
+   {
+    axios({
+      method: 'get',
+      url: base_url2+'/getPopularProduct',
 
 
     })
     .then(
       (response) => {
-        this.setState({category:response.data})
-        
+       
+        axios({
+          method: 'post',
+          url: base_url+'/product/getProductArray',
+          data: {
+            product_id:response.data
+          }
+    
+    
+        })
+        .then(
+          (response) => {
 
+          this.setState({p_product:response.data}) 
+          
+          
+          }, (error) => {
+          console.log(error);
+          
+          }
+          );
       }, (error) => {
-        console.log(error);
-
+      console.log(error);
+      
       }
       );
+     
    }
+
+    
  
    componentDidMount(){
     // console.log('this.props',this.props)
@@ -84,24 +164,30 @@ import { NavigationContainer } from '@react-navigation/native';
    render(){
      return ( 
        
-         <SafeAreaView style={styles.container}>
-         <FlatList
-            data={this.state.category}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={{flex:1}} onPress={()=>this.navigateCategory(item.category_id,item.category)}>              
-                <Card containerStyle={styles.card} >
-                <Card.Image source={{uri: item.url}}  />
-                <Text style={{alignSelf: 'center',}}>{item.category}</Text>
-              </Card>
-              </TouchableOpacity>
+      <SafeAreaView  style={styles.container}>
+          
+      <FlatList
+         data={[...this.state.r_product,...this.state.p_product]}
+         renderItem={({ item }) => (
+           <TouchableOpacity style={{flex:1}} onPress={()=>{this.props.navigation.navigate('Product',{'product_id':item.asin})}} >              
+             <Card containerStyle={styles.card} >
+             <Card.Image source={{uri: item.images[0].url}}  />
+             <View style={{flexDirection:'row',marginTop:5}}>
+             <Text style={{fontSize:18, color:'#323232'}}>{item.name}</Text>
+             <Text style={{fontSize:18, color:'#323232',marginLeft:120}}>{item.rating}<Image source={require('./icon/star.png')}/></Text>
+             </View>
+             <Text style={{fontSize:20,fontWeight:'bold', color:'#323232'}}>${item.price}</Text>
+             {item.stock<=0 && <Text style={{fontSize:12, color:'red'}}>Out of Stock</Text>}
+           </Card>
+           </TouchableOpacity>
 
-            )}
-      //Setting the number of column
-            numColumns={2}
-            keyExtractor={(item) => item.category_id}
-         />
-       </SafeAreaView>
-
+         )}
+   //Setting the number of column
+         numColumns={2}
+         keyExtractor={(item) => item.asin}
+      />
+      
+        </SafeAreaView>
 
 
      );

@@ -80,7 +80,7 @@ class Login extends Component {
       return;
     }
     this.setState({ disable: true })
-   
+    
     axios({
       method: 'post',
       url: base_url + '/user/login',
@@ -103,6 +103,7 @@ class Login extends Component {
           this.props.navigation.navigate("home");
 
         }, (error) => {
+          console.log("hit")
           console.log('error', error);
           this.setState({ disable: false })
         }
